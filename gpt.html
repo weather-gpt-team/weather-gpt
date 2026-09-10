@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>WeatherGPT</title>
+
+
+    <!-- Bootstrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+
+            width: 100%;
+            height: 65px;
+
+            background-color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+        }
+
+
+        .logo {
+
+            font-size: 22px;
+            font-weight: bold;
+
+            color: #2563eb;
+
+        }
+
+
+        .menu {
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+
+        }
+
+
+        .menu a {
+
+            text-decoration: none;
+
+            color: #555;
+
+            font-size: 14px;
+
+        }
+
+
+        .menu a:hover {
+
+            color: #2563eb;
+
+        }
+
+
+        .login-btn {
+
+            background-color: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 9px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+
+            width: 100%;
+
+            min-height: 550px;
+
+
+            /* SUNNY + CLOUDY BACKGROUND */
+
+            background:
+
+            linear-gradient(
+                rgba(135, 206, 235, 0.40),
+                rgba(255, 255, 255, 0.30)
+            ),
+
+            url("https://images.unsplash.com/photo-1499346030926-9a72daac6c63?auto=format&fit=crop&w=1600&q=80");
+
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-repeat: no-repeat;
+
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+
+            text-align: center;
+
+        }
+
+
+        .hero-content {
+
+            width: 100%;
+
+            padding: 30px 15px;
+
+        }
+
+
+        .weather-icon {
+
+            font-size: 50px;
+
+        }
+
+
+        .title {
+
+            font-size: 48px;
+
+            font-weight: bold;
+
+            color: #183b56;
+
+        }
+
+
+        .subtitle {
+
+            font-size: 18px;
+
+            color: #444;
+
+            margin-top: 10px;
+
+        }
+
+
+        /* ================= LIVE DATE TIME ================= */
+
+        .date-time {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .date {
+
+            background-color: rgba(255,255,255,0.85);
+
+            padding: 10px 18px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            color: #183b56;
+
+        }
+
+
+        .time {
+
+            background-color: rgba(255,255,255,0.85);
+
+            padding: 10px 18px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            color: #183b56;
+
+        }
+
+
+        /* ================= SEARCH BOX ================= */
+
+        .search-container {
+
+            width: 600px;
+
+            max-width: 90%;
+
+            margin: 25px auto 15px;
+
+
+            background-color: white;
+
+            padding: 8px;
+
+            border-radius: 40px;
+
+
+            display: flex;
+
+            align-items: center;
+
+
+            box-shadow:
+            0 8px 25px rgba(0,0,0,0.15);
+
+        }
+
+
+        .search-container input {
+
+            flex: 1;
+
+            border: none;
+
+            outline: none;
+
+            padding: 12px 20px;
+
+            font-size: 15px;
+
+        }
+
+
+        .search-button {
+
+            width: 45px;
+
+            height: 45px;
+
+
+            border: none;
+
+            border-radius: 50%;
+
+
+            background-color: #2563eb;
+
+            color: white;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= DATE SELECT ================= */
+
+        .weather-date-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .weather-date-label {
+
+            font-weight: bold;
+
+            color: #183b56;
+
+        }
+
+
+        .weather-date {
+
+            padding: 10px 15px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background-color: white;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+
+        }
+
+
+        /* ================= QUICK BUTTONS ================= */
+
+        .quick-buttons {
+
+            margin-top: 20px;
+
+        }
+
+
+        .quick-button {
+
+            border: none;
+
+            background-color: rgba(255,255,255,0.85);
+
+            padding: 9px 15px;
+
+            margin: 5px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+        }
+
+
+        .quick-button:hover {
+
+            background-color: white;
+
+        }
+
+
+        /* ================= WEATHER RESULT ================= */
+
+        .weather-result {
+
+            width: 600px;
+
+            max-width: 90%;
+
+            margin: 25px auto;
+
+            background-color: white;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            display: none;
+
+            box-shadow:
+            0 5px 20px rgba(0,0,0,0.10);
+
+        }
+
+
+        .result-title {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #183b56;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .result-data {
+
+            font-size: 16px;
+
+            color: #555;
+
+            line-height: 2;
+
+        }
+
+
+        /* ================= FEATURES ================= */
+
+        .features {
+
+            width: 100%;
+
+            padding: 50px 20px;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .card {
+
+            width: 250px;
+
+            min-height: 180px;
+
+            background-color: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            box-shadow:
+            0 5px 15px rgba(0,0,0,0.08);
+
+        }
+
+
+        .card-icon {
+
+            font-size: 35px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .card h3 {
+
+            font-size: 18px;
+
+            color: #183b56;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .card p {
+
+            font-size: 14px;
+
+            color: #777;
+
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+
+            background-color: #183b56;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:768px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+
+            .menu a {
+                display: none;
+            }
+
+
+            .title {
+                font-size: 36px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+
+    <div class="logo">
+
+        🌤️ WeatherGPT
+
+    </div>
+
+
+    <div class="menu">
+
+
+        <a href="#home">
+            Home
+        </a>
+
+
+        <a href="#features">
+            Features
+        </a>
+
+
+        <a href="#contact">
+            Contact
+        </a>
+
+
+        <button class="login-btn">
+
+            <i class="bi bi-person"></i>
+
+            Login
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= HERO ================= -->
+
+<div class="hero" id="home">
+
+
+    <div class="hero-content">
+
+
+        <div class="weather-icon">
+
+            🌤️
+
+        </div>
+
+
+
+        <div class="title">
+
+            WeatherGPT
+
+        </div>
+
+
+
+        <div class="subtitle">
+
+            Check weather for any city and date
+
+        </div>
+
+
+
+        <!-- CURRENT DATE AND TIME -->
+
+        <div class="date-time">
+
+
+            <div class="date" id="date">
+
+            </div>
+
+
+            <div class="time" id="time">
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- SEARCH -->
+
+        <div class="search-container">
+
+
+            <input
+
+                type="text"
+
+                id="cityInput"
+
+                placeholder="Enter city name... Example: Chennai"
+
+            >
+
+
+            <button
+
+                class="search-button"
+
+                onclick="searchWeather()"
+
+            >
+
+                <i class="bi bi-search"></i>
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- SELECT WEATHER DATE -->
+
+        <div class="weather-date-container">
+
+
+            <div class="weather-date-label">
+
+                📅 Select Weather Date:
+
+            </div>
+
+
+            <input
+
+                type="date"
+
+                id="selectedDate"
+
+                class="weather-date"
+
+            >
+
+
+        </div>
+
+
+
+        <!-- QUICK BUTTONS -->
+
+        <div class="quick-buttons">
+
+
+            <button
+                class="quick-button"
+                onclick="setCity('Chennai')"
+            >
+
+                🌤️ Chennai
+
+            </button>
+
+
+            <button
+                class="quick-button"
+                onclick="setCity('Mumbai')"
+            >
+
+                🌤️ Mumbai
+
+            </button>
+
+
+            <button
+                class="quick-button"
+                onclick="setCity('Delhi')"
+            >
+
+                🌤️ Delhi
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- WEATHER RESULT -->
+
+        <div
+
+            class="weather-result"
+
+            id="weatherResult"
+
+        >
+
+
+            <div
+
+                class="result-title"
+
+                id="resultTitle"
+
+            >
+
+            </div>
+
+
+
+            <div
+
+                class="result-data"
+
+                id="resultData"
+
+            >
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= FEATURES ================= -->
+
+<div class="features" id="features">
+
+
+    <div class="card">
+
+
+        <div class="card-icon">
+
+            🌤️
+
+        </div>
+
+
+        <h3>
+
+            Current Weather
+
+        </h3>
+
+
+        <p>
+
+            Check current weather
+            for any city.
+
+        </p>
+
+
+    </div>
+
+
+
+    <div class="card">
+
+
+        <div class="card-icon">
+
+            📅
+
+        </div>
+
+
+        <h3>
+
+            Forecast
+
+        </h3>
+
+
+        <p>
+
+            Check upcoming weather forecast.
+
+        </p>
+
+
+    </div>
+
+
+
+    <div class="card">
+
+
+        <div class="card-icon">
+
+            🌡️
+
+        </div>
+
+
+        <h3>
+
+            Weather Details
+
+        </h3>
+
+
+        <p>
+
+            Check temperature,
+            humidity and conditions.
+
+        </p>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<div class="footer" id="contact">
+
+    © 2026 WeatherGPT 🌤️
+
+</div>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+/* ==============================
+   LIVE DATE AND TIME
+============================== */
+
+function updateDateTime() {
+
+
+    let now = new Date();
+
+
+    let currentDate =
+
+        now.toLocaleDateString(
+
+            "en-IN",
+
+            {
+
+                weekday: "long",
+
+                year: "numeric",
+
+                month: "long",
+
+                day: "numeric"
+
+            }
+
+        );
+
+
+    let currentTime =
+
+        now.toLocaleTimeString(
+
+            "en-IN",
+
+            {
+
+                hour: "2-digit",
+
+                minute: "2-digit",
+
+                second: "2-digit"
+
+            }
+
+        );
+
+
+    document.getElementById("date").innerHTML =
+
+        "📅 Today: " + currentDate;
+
+
+    document.getElementById("time").innerHTML =
+
+        "🕒 Time: " + currentTime;
+
+
+}
+
+
+/* UPDATE DATE AND TIME */
+
+updateDateTime();
+
+setInterval(updateDateTime, 1000);
+
+
+
+/* ==============================
+   SET TODAY AS DEFAULT DATE
+============================== */
+
+let today = new Date();
+
+
+let year = today.getFullYear();
+
+
+let month = String(
+    today.getMonth() + 1
+).padStart(2, "0");
+
+
+let day = String(
+    today.getDate()
+).padStart(2, "0");
+
+
+document.getElementById("selectedDate").value =
+
+    year + "-" + month + "-" + day;
+
+
+
+/* ==============================
+   SEARCH WEATHER
+============================== */
+
+function searchWeather() {
+
+
+    let city =
+
+        document.getElementById(
+
+            "cityInput"
+
+        ).value;
+
+
+    let selectedDate =
+
+        document.getElementById(
+
+            "selectedDate"
+
+        ).value;
+
+
+    if(city === "") {
+
+
+        alert(
+
+            "Please enter a city name!"
+
+        );
+
+
+        return;
+
+    }
+
+
+
+    document.getElementById(
+
+        "weatherResult"
+
+    ).style.display = "block";
+
+
+    document.getElementById(
+
+        "resultTitle"
+
+    ).innerHTML =
+
+        "🌤️ Weather Result";
+
+
+    document.getElementById(
+
+        "resultData"
+
+    ).innerHTML =
+
+        "📍 City: <b>" + city + "</b><br>" +
+
+        "📅 Selected Date: <b>" +
+
+        selectedDate +
+
+        "</b><br><br>" +
+
+        "🌡️ Temperature: Weather API Required<br>" +
+
+        "💧 Humidity: Weather API Required<br>" +
+
+        "☁️ Condition: Weather API Required";
+
+
+}
+
+
+
+/* ==============================
+   QUICK CITY BUTTON
+============================== */
+
+function setCity(city) {
+
+
+    document.getElementById(
+
+        "cityInput"
+
+    ).value = city;
+
+
+    searchWeather();
+
+
+}
+
+
+
+/* ==============================
+   ENTER KEY
+============================== */
+
+document.getElementById(
+
+    "cityInput"
+
+).addEventListener(
+
+    "keypress",
+
+    function(event) {
+
+
+        if(event.key === "Enter") {
+
+            searchWeather();
+
+        }
+
+
+    }
+
+);
+
+
+</script>
+
+
+
+<!-- Bootstrap JavaScript -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>
